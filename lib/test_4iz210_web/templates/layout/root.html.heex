@@ -9,14 +9,18 @@
     <link phx-track-static rel="icon" href={Routes.static_path(@conn, "/images/favicon.png")}/>
     <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css")}/>
     <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
   </head>
   <body>
-    <header class="container">
-      <h1>Cvičný test 4IZ210</h1><br>
-      <h2>Zpracování informací a znalostí</h2><br>
+    <header class="container my-5 d-flex flex-column flex-lg-row align-items-start justify-content-between">
+      <div class="d-flex flex-column">
+        <h1>Cvičný test 4IZ210</h1>
+        <h2>Zpracování informací a znalostí</h2>
+      </div>
 
-      <a href=".">Vygenerovat nové zadání</a>
+      <a href="." class="btn btn-primary btn-lg">Vygenerovat nové zadání</a>
     </header>
+    <hr>
     <%= @inner_content %>
   </body>
 </html>
