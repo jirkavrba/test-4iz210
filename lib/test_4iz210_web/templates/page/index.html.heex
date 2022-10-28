@@ -1,0 +1,182 @@
+<section>
+  <h1>Výpočet entropie a informačního zisku (ID3)</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <%= for attribute <- @entropy_question.dataset.attributes do %>
+          <th><%= attribute %></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for row <- @entropy_question.dataset.rows do %>
+        <tr>
+          <%= for attribute <- @entropy_question.dataset.attributes do %>
+            <td><%= if row[attribute], do: "T", else: "F" %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <section class="question">
+      <p>Jaká je entropie datasetu pro cílový atribut <strong><%= @entropy_question.dataset.class_attribute %></strong>?</p>
+      <details>
+        <summary>Odpověď</summary>
+        <strong><%= @entropy_question.entropy %></strong>
+      </details>
+  </section>
+
+  <section class="question">
+      <p>Jaká je hodnota informačního zisku, který by vrátil algoritmus ID3 pro atribut 
+          <strong><%= @entropy_question.selected_attribute %></strong>
+          při jeho použití jako kořenového atributu?
+      </p>
+      <details>
+        <summary>Odpověď</summary>
+        <strong><%= @entropy_question.information_gain %></strong>
+      </details>
+  </section>
+
+  <h1>Asociační pravidla</h1>
+
+  <table>
+    <tr>
+      <td></td>
+      <th>Consequent</th>
+      <th>&not; Consequent</th>
+    </tr>
+    <tr>
+      <th>Antecedent</th>
+      <td><%= @associative_rules_question.contingency_table.a_c %></td>
+      <td><%= @associative_rules_question.contingency_table.a_not_c %></td>
+    </tr>
+    <tr>
+      <th>&not; Antecedent</th>
+      <td><%= @associative_rules_question.contingency_table.not_a_c %></td>
+      <td><%= @associative_rules_question.contingency_table.not_a_not_c %></td>
+    </tr>
+  </table>
+
+  <section class="question">
+      <p>Jaká je hodnota míry <strong>spolehlivosti</strong> (confidence)?</p>
+      <details>
+        <summary>Odpověď</summary>
+        <strong><%= @associative_rules_question.confidence %></strong>
+      </details>
+  </section>
+
+  <section class="question">
+      <p>Jaká je hodnota míry relativní <strong>podpora</strong> (support)?</p>
+      <details>
+        <summary>Odpověď</summary>
+        <strong><%= @associative_rules_question.support %></strong>
+      </details>
+  </section>
+
+  <section class="question">
+      <p>Jaká je hodnota míry <strong>lift</strong>?</p>
+      <details>
+        <summary>Odpověď</summary>
+        <strong><%= @associative_rules_question.lift %></strong>
+      </details>
+  </section>
+
+  <h1>Evaluace klasifikátoru</h1>
+  
+  <p>Natrénovaný klasifikátor vrátil pro testovací data tyto výsledky:</p>
+  <table>
+    <thead>
+      <tr>
+        <th>ID instance</th>
+        <th>Skutečnost</th>
+        <th>Predikce</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for row <- @confusion_matrix_question.results do %>
+        <tr>
+          <td><%= row.id %></td>
+          <td><%= if row.reality, do: "ANO", else: "NE" %></td>
+          <td><%= if row.prediction, do: "ANO", else: "NE" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <details>
+    <summary>Matice záměn</summary>
+    <table>
+      <thead>
+        <tr>
+          <td colspan="2"></td>
+          <th colspan="2">Skutečnost</th>
+        </tr>
+        <tr>
+          <td colspan="2"></td>
+          <th>ANO</th>
+          <th>NE</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th rowspan="2">Predikce</th>
+          <th>ANO</th>
+          <td><%= @confusion_matrix_question.confusion_matrix.true_positive %></td>
+          <td><%= @confusion_matrix_question.confusion_matrix.false_positive %></td>
+        </tr>
+        <tr>
+          <th>NE</th>
+          <td><%= @confusion_matrix_question.confusion_matrix.false_negative %></td>
+          <td><%= @confusion_matrix_question.confusion_matrix.true_negative %></td>
+        </tr>
+      </tbody>
+    </table>
+  </details>
+
+  <section class="question">
+    <p>
+      Jaká je hodnota míry <strong>přesnost</strong> (precision) pro třídu 
+      <strong><%= if @confusion_matrix_question.precision_class, do: "ANO", else: "NE" %></strong>
+      daného klasifikátoru?
+    </p>
+    <details>
+      <summary>Odpověď</summary>
+      <strong><%= @confusion_matrix_question.precision %></strong>
+    </details>
+  </section>
+
+  <section class="question">
+    <p>
+      Jaká je hodnota míry <strong>úplnost</strong> (recall) pro třídu 
+      <strong><%= if @confusion_matrix_question.recall_class, do: "ANO", else: "NE" %></strong>
+      daného klasifikátoru?
+    </p>
+    <details>
+      <summary>Odpověď</summary>
+      <strong><%= @confusion_matrix_question.recall %></strong>
+    </details>
+  </section>
+
+  <section class="question">
+    <p>Jaká je celková <strong>správnost</strong> (accuracy) daného klasifikátoru?</p>
+    <details>
+      <summary>Odpověď</summary>
+      <strong><%= @confusion_matrix_question.accuracy %></strong>
+    </details>
+  </section>
+
+  <h1>Euklidovská vzdálenost</h1>
+  <section class="question">
+    <p>
+      Jaká je Euklidovská vzdálenost mezi body 
+      <strong>[<%= Enum.join(@euclidean_distance_question.first_vector, ", ") %>]</strong> a
+      <strong>[<%= Enum.join(@euclidean_distance_question.second_vector, ", ") %>]</strong>?
+    </p>
+    <details>
+      <summary>Odpověď</summary>
+      <strong><%= @euclidean_distance_question.distance %></strong>
+    </details>
+  </section>
+</section>
