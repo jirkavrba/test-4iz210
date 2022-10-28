@@ -20,7 +20,7 @@ defmodule Test4iz210Web.Endpoint do
     at: "/",
     from: :test_4iz210,
     gzip: false,
-    only: ~w(assets fonts images favicon.ico robots.txt)
+    only: ~w(assets fonts images favicon.png robots.txt)
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
